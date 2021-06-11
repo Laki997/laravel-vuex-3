@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MovieRequest;
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use  App\Http\Services\MovieService;
 
 class MoviesController extends Controller
 {
+    public function __construct(MovieService $movieService){
+        $this->movieService = $movieService;
+    }
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Movie::all();
+       return  $this->movieService->search($request);
     }
 
     /**
@@ -33,10 +39,14 @@ class MoviesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MovieRequest $request)
     {
+
         info($request);
-        return Movie::create($request->all());
+
+        $data = $request->validated();
+       
+        return Movie::create($data);
     }
 
     /**
