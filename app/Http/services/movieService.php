@@ -8,9 +8,13 @@ class MovieService {
     public function search($request){
         if ($request->input('title')){
 
-            return Movie::where('title',$request->input('title'))->get();
+            return Movie::where('title',$request->input('title'))->take(10)->skip(5)->get();
         } else {
-            return Movie::all();
+             return Movie::take(10)->skip(5)->get();
+             
+
+             
+
         }
     }
 }
